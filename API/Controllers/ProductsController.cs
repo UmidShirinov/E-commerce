@@ -1,5 +1,5 @@
-﻿using API.Data.DataContext;
-using API.Data.DbModels;
+﻿using API.Infrastructure.DataContext;
+using API.Core.DbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -25,13 +25,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public List<Product> GetDAta()
+        public string GetDAta()
         {
-            var data = _storeContext.Products.ToList();
+            //var data = _storeContext.Products.ToList();
 
 
 
-            return data;
-        }
+            return "asdad";
+         }
     }
 }
