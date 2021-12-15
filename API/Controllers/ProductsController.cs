@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Core.Interfaces;
 
 namespace API.Controllers
 {
@@ -14,24 +15,29 @@ namespace API.Controllers
     public class ProductsController : ControllerBase
     {
 
-        private StoreContext _storeContext { get; set; }
+        private readonly IProductsRepository _productsRepository;
 
-
-        public ProductsController(StoreContext storeContext )
+        public ProductsController(IProductsRepository productsRepository)
         {
-
-            _storeContext = storeContext;
-
+            _productsRepository = productsRepository;
         }
 
         [HttpGet]
-        public string GetDAta()
+        public async Task<ActionResult<List<Product>>> GetDAta()
         {
-            //var data = _storeContext.Products.ToList();
+            var data = await _productsRepository.GetProductsAsync();
 
-
-
-            return "asdad";
+            return Ok(data);
          }
+
+        [HttpPost("{id}")]
+        public async Task<ActionResult<Product>> GetById(int id)
+        {
+            return await _productsRepository.GetProductByIdAsync(id);
+        }
+
+
+
+
     }
 }
