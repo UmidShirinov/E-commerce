@@ -13,7 +13,7 @@ namespace API.Core.DbModels
         public decimal Price { get; set; }
         public string PictureURL { get; set; }
         public ProductType ProducType { get; set; }
-        public int ProductId { get; set; }
+        public int ProductTypeId { get; set; }
         public ProductBrand ProductBrand { get; set; }
         public int ProductBrandId { get; set; }
 
