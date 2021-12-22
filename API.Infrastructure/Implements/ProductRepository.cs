@@ -16,6 +16,10 @@ namespace API.Infrastructure.Implements
             _storeContext = storeContext;
         }
 
+        public async Task<List<ProductBrand>> GetProductBrandAsync()
+        {
+            return await _storeContext.ProductBrand.ToListAsync();
+        }
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
@@ -24,11 +28,21 @@ namespace API.Infrastructure.Implements
             return FindId;
         }
 
-        public async Task<IReadOnlyList<Product>> GetProductsAsync()
+        public async Task<List<Product>> GetProductsAsync()
         {
-            var ProdList = await _storeContext.products.ToListAsync();
+            var ProdList = await _storeContext.products.
+                Include(p=>p.ProductBrand).
+                Include(p=>p.ProducType)
+                .ToListAsync();
 
             return ProdList;
+        }
+
+        public  async Task<List<ProductType>> GetProductTypeAsync()
+        {
+            var data = await _storeContext.ProductType.ToListAsync();
+
+            return data;
         }
     }
 }
