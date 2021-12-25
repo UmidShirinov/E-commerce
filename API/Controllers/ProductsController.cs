@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Core.Interfaces;
+using API.Infrastructure.Implements;
 
 namespace API.Controllers
 {
@@ -15,11 +16,18 @@ namespace API.Controllers
     public class ProductsController : ControllerBase
     {
 
-        private readonly IProductsRepository _productsRepository;
 
-        public ProductsController(IProductsRepository productsRepository)
+        private readonly IGenericRepository<Product> _productRepository;
+        private readonly IGenericRepository<ProductBrand> _productBrandRepository;
+        private readonly IGenericRepository<ProductType> _productTypeRepository;
+
+        public ProductsController(IGenericRepository<Product> productRepository, 
+            IGenericRepository<ProductBrand> productBrandRepository,
+            IGenericRepository<ProductType> productTypeRepository)
         {
-            _productsRepository = productsRepository;
+            _productRepository = productRepository;
+            _productBrandRepository = productBrandRepository;
+            _productTypeRepository = productTypeRepository;
         }
 
         [HttpGet]
@@ -28,7 +36,7 @@ namespace API.Controllers
 
             try
             {
-                var data = await _productsRepository.GetProductsAsync();
+                var data = await _productRepository.ListAllAsync();
                 return Ok(data);
 
             }
@@ -43,19 +51,19 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetById(int id)
         {
-            return await _productsRepository.GetProductByIdAsync(id);
+            return await _productRepository.GetByIdAsync(id) ;
         }
 
         [HttpGet("types")]
         public async Task<ActionResult<List<ProductType>>> GetTypes()
         {
-            return  Ok(await _productsRepository.GetProductTypeAsync());
+            return  Ok(await _productTypeRepository.ListAllAsync());
         }
 
         [HttpGet("brands")]
         public async Task<ActionResult<List<ProductBrand>>> GetBrands()
         {
-            return Ok(await _productsRepository.GetProductBrandAsync());
+            return Ok(await _productBrandRepository.ListAllAsync());
         }
 
 

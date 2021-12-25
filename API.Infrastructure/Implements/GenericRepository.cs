@@ -1,5 +1,7 @@
 ﻿using API.Core.DbModels;
 using API.Core.Interfaces;
+using API.Infrastructure.DataContext;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +12,20 @@ namespace API.Infrastructure.Implements
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
-        public Task<T> GetByIdAsync(int id)
+        private readonly StoreContext _storeContext;
+
+        public GenericRepository(StoreContext _storeContext)
         {
-            throw new NotImplementedException();
+            this._storeContext = _storeContext;
+        }
+        public async Task<T> GetByIdAsync(int id)
+        {
+            return await _storeContext.Set<T>().FindAsync(id);
         }
 
-        public Task<IReadOnlyList<T>> ListAllAsync()
+        public async Task<IReadOnlyList<T>> ListAllAsync()
         {
-            throw new NotImplementedException();
+            return await _storeContext.Set<T>().ToListAsync();
         }
     }
 }
