@@ -23,7 +23,7 @@ namespace API.Infrastructure.Implements
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
-            var FindId = await _storeContext.products.FindAsync(id);
+            var FindId = await _storeContext.products.FirstOrDefaultAsync(p=>p.Id == id);
 
             return FindId;
         }
