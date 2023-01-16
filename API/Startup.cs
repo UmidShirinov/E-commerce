@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Data.DataContext;
+using API.Core.Interfaces;
+using API.Infrastructure.DataContext;
+using API.Infrastructure.Implements;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +34,10 @@ namespace API
             services.AddDbContext<StoreContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefdaultConnection"))
             );
+
+            services.AddScoped<IProductsRepository, ProductRepository>();
+            services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+
             //services.AddSwaggerGen(c =>
             //{
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
